@@ -63,5 +63,5 @@ public class MainActivity extends AppCompatActivity {
         String arr [] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N" };
         return arr [(int)Math.round(((float)  num % 360) / 45)];
     }
-    
+
 }
