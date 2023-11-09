@@ -1,8 +1,11 @@
 package com.example.labb1_martin;
+import linker.objectlinker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
