@@ -3,6 +3,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Executor;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,10 +26,36 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    @Override 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+
+        executor.execute(()->{
+            try {
+                WeatherDataFetcher weatherDataFetcher = new WeatherDataFetcher();
+                WeatherData weatherData;
+                weatherData = weatherDataFetcher.fetchWeatherData("60.10", "9.58");
+                //System.out.println(weatherData.getTemperature());
+                double temperature = weatherData.getTemperature();
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView helloWorldText = findViewById(R.id.id_rain);
+                        helloWorldText.setText(String.valueOf(temperature));
+                    }
+                });
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+
     }
 
     public void displayApp() {
