@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -13,8 +14,10 @@ import java.util.concurrent.Executor;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.util.Log;
 import java.util.ArrayList;
+
+import kotlinx.coroutines.internal.Symbol;
 
 public class MainActivity extends AppCompatActivity {
     Button refresh;
@@ -26,36 +29,42 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        executeParsing();
+        displayApp();
+    }
+
+    public void executeParsing() {
         Executor executor = Executors.newSingleThreadExecutor();
         Handler mainHandler = new Handler(Looper.getMainLooper());
 
         executor.execute(()->{
             try {
-                WeatherDataFetcher weatherDataFetcher = new WeatherDataFetcher();
                 WeatherData weatherData;
-                weatherData = weatherDataFetcher.fetchWeatherData("60.10", "9.58");
-                //System.out.println(weatherData.getTemperature());
+                WeatherDataFetcher weatherDataFetcher = new WeatherDataFetcher();
+                weatherData = weatherDataFetcher.fetchWeatherData("62.930812", "17.306927");
+
+                System.out.println("WEATHER TEMP: " + weatherData.getTemperature());
                 double temperature = weatherData.getTemperature();
+                String cloudiness = weatherData.getHumidity();
+                String windspeed = weatherData.getWindSpeed();
+                String rain = weatherData.getPrecipitation();
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        TextView helloWorldText = findViewById(R.id.id_rain);
+                        TextView helloWorldText = findViewById(R.id.id_temp);
                         helloWorldText.setText(String.valueOf(temperature));
                     }
                 });
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+            } catch (InterruptedException | IOException e) {
                 throw new RuntimeException(e);
             }
         });
-
-
     }
 
     public void displayApp() {
@@ -68,17 +77,24 @@ public class MainActivity extends AppCompatActivity {
      * Updates values on UI
      */
     public void SetValues (){
-    WindSpeed.setText(degToCompass(360));
-    rain.setText("no rain");
-    cloud.setText("Cloudy");
-    temp.setText("temp");
+        Log.d("TEMPERATURE","SetValues: " + 123.123);
+
+        // double tempDouble = weatherData.getTemperature();
+
+        // System.out.println(weatherData.getHumidity());
+
+
+        WindSpeed.setText(degToCompass(360));
+        rain.setText("no rain");
+        cloud.setText("Cloudy");
+        temp.setText("strTemp");
 
     }
 
     /**
      * Saves view ids in variables
      */
-    public void initialView (){
+    public void initialView () {
 
        refresh = findViewById(R.id.id_refresh_btn);
        rain = findViewById(R.id.id_rain);

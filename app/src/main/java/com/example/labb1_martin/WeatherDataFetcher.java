@@ -25,10 +25,13 @@ public class WeatherDataFetcher {
             JsonObject current = jsonObject.getAsJsonObject("properties").getAsJsonArray("timeseries").get(0).getAsJsonObject().getAsJsonObject("data").getAsJsonObject("instant").getAsJsonObject("details");
             double temperature = current.get("air_temperature").getAsDouble();
             JsonObject next1Hour = jsonObject.getAsJsonObject("properties").getAsJsonArray("timeseries").get(0).getAsJsonObject().getAsJsonObject("data").getAsJsonObject("next_1_hours").getAsJsonObject("summary");
+
             String weatherCondition = next1Hour.has("symbol_code") ? next1Hour.get("symbol_code").getAsString() : "unknown";
             String windSpeed = current.get("wind_speed").getAsString();
+            double cloud = current.get("cloud_area_fraction").getAsDouble();
             String windDirection = current.get("wind_from_direction").getAsString();
             String humidity = current.get("relative_humidity").getAsString();
+            String tempStr = current.get("air_temperature").getAsString();
             String precipitation ="";// = next1Hour.getAsJsonObject("details").get("precipitation_amount").getAsString();
             return new WeatherData(temperature, weatherCondition, windSpeed, windDirection, humidity, precipitation);
         } else throw new IOException("Failed to retrieve JSON data. Status code: " + response.message());
