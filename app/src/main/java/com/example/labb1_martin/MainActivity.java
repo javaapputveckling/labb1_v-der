@@ -28,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
     ImageView MainImage;
 
 
-
+    String temperatureVar;
+    String cloudinessVar;
+    String windspeedVar;
+    String rainVar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +48,25 @@ public class MainActivity extends AppCompatActivity {
 
         executor.execute(()->{
             try {
-                WeatherData weatherData;
+                WeatherData tempData;
                 WeatherDataFetcher weatherDataFetcher = new WeatherDataFetcher();
-                weatherData = weatherDataFetcher.fetchWeatherData("62.930812", "17.306927");
+                tempData = weatherDataFetcher.fetchWeatherData("62.930812", "17.306927");
 
-                System.out.println("WEATHER TEMP: " + weatherData.getTemperature());
-                double temperature = weatherData.getTemperature();
-                String cloudiness = weatherData.getHumidity();
-                String windspeed = weatherData.getWindSpeed();
-                String rain = weatherData.getPrecipitation();
+                temperatureVar = "Temp: " + Double.toString(tempData.getTemperature());
+                cloudinessVar = "Cloud: " + tempData.getHumidity();
+                windspeedVar = "Windspeed: " + tempData.getWindSpeed();
+                rainVar = "Rain: " + tempData.getPrecipitation();
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        TextView helloWorldText = findViewById(R.id.id_temp);
-                        helloWorldText.setText(String.valueOf(temperature));
+                        temp = findViewById(R.id.id_temp);
+                        temp.setText(temperatureVar);
+                        cloud = findViewById(R.id.id_clouds);
+                        cloud.setText(cloudinessVar);
+                        WindSpeed = findViewById(R.id.id_wind);
+                        WindSpeed.setText(windspeedVar);
+                        rain = findViewById(R.id.id_rain);
+                        rain.setText(rainVar);
                     }
                 });
             } catch (InterruptedException | IOException e) {
@@ -79,15 +87,10 @@ public class MainActivity extends AppCompatActivity {
     public void SetValues (){
         Log.d("TEMPERATURE","SetValues: " + 123.123);
 
-        // double tempDouble = weatherData.getTemperature();
-
-        // System.out.println(weatherData.getHumidity());
-
-
-        WindSpeed.setText(degToCompass(360));
-        rain.setText("no rain");
-        cloud.setText("Cloudy");
-        temp.setText("strTemp");
+        WindSpeed.setText(windspeedVar);
+        rain.setText(rainVar);
+        cloud.setText(cloudinessVar);
+        temp.setText(temperatureVar);
 
     }
 
