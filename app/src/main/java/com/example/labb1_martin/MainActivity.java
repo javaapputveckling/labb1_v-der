@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     String windspeedVar;
     String rainVar;
     String imageURL;
+    String windDir;
+    String iconImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 WeatherDataFetcher weatherDataFetcher = new WeatherDataFetcher();
                 tempData = weatherDataFetcher.fetchWeatherData("62.930812", "17.306927");
 
+
                 temperatureVar = "Temp: " + tempData.getTemperature();
                 cloudinessVar = "Cloud: " + tempData.getCloudiness();
                 windspeedVar = "Windspeed: " + tempData.getWindSpeed() + " " + degToCompass(Float.parseFloat(tempData.getWindDirection()));
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     rain = findViewById(R.id.id_rain);
 
                     setValues();
+
 
                 });
             } catch (InterruptedException | IOException e) {
@@ -81,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void setValues(){
         Log.d("TEMPERATURE","SetValues: " + 123.123);
+
 
         WindSpeed.setText(windspeedVar);
         rain.setText(rainVar);
@@ -109,13 +114,14 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      *
-     * @param num which is wind degree
+     * @param windDegree which is wind degree in String
      * Converts wind degree to direction
      * @return directions
      */
     public String degToCompass (float num){
         String[] arr = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N" };
         return arr [(int)Math.round(((float)  num % 360) / 45)];
+
     }
 
 }
