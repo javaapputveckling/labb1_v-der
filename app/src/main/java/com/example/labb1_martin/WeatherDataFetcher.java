@@ -22,17 +22,38 @@ public class WeatherDataFetcher {
         if (response.isSuccessful()) {
             Gson gson = new Gson();
             JsonObject jsonObject = gson.fromJson(response.body().string(), JsonObject.class);
-            JsonObject current = jsonObject.getAsJsonObject("properties").getAsJsonArray("timeseries").get(0).getAsJsonObject().getAsJsonObject("data").getAsJsonObject("instant").getAsJsonObject("details");
+
+            // get current data into a JsonObject by navigating API object
+            JsonObject current = jsonObject.getAsJsonObject("properties").
+                    getAsJsonArray("timeseries").
+                    get(0).getAsJsonObject().getAsJsonObject("data").
+                    getAsJsonObject("instant").
+                    getAsJsonObject("details");
+
+            // get future data into a JsonObject by navigating API object
+            JsonObject next1Hour = jsonObject.getAsJsonObject("properties").
+                    getAsJsonArray("timeseries").
+                    get(0).getAsJsonObject().
+                    getAsJsonObject("data").
+                    getAsJsonObject("next_1_hours").
+                    getAsJsonObject("summary");
+
+            // assign json data
             double temperature = current.get("air_temperature").getAsDouble();
-            JsonObject next1Hour = jsonObject.getAsJsonObject("properties").getAsJsonArray("timeseries").get(0).getAsJsonObject().getAsJsonObject("data").getAsJsonObject("next_1_hours").getAsJsonObject("summary");
             String weatherCondition = next1Hour.has("symbol_code") ? next1Hour.get("symbol_code").getAsString() : "unknown";
             String windSpeed = current.get("wind_speed").getAsString();
+            double cloud = current.get("cloud_area_fraction").getAsDouble();
             String windDirection = current.get("wind_from_direction").getAsString();
             String humidity = current.get("relative_humidity").getAsString();
-            String precipitation ="";// = next1Hour.getAsJsonObject("details").get("precipitation_amount").getAsString();
-            return new WeatherData(temperature, weatherCondition, windSpeed, windDirection, humidity, precipitation);
-        } else throw new IOException("Failed to retrieve JSON data. Status code: " + response.message());
+            String tempStr = current.get("air_temperature").getAsString();
+            String precipitation =""; // = next1Hour.getAsJsonObject("details").get("precipitation_amount").getAsString();
 
+            // return json data
+            return new WeatherData(temperature, weatherCondition, windSpeed, windDirection, humidity, precipitation);
+        }
+        else {
+            throw new IOException("Failed to retrieve JSON data. Status code: " + response.message());
+        }
 
 
     }
