@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 windspeedVar = "Windspeed: " + tempData.getWindSpeed() + " at direction " + windDir;
                 rainVar = "Rain: " + tempData.getPrecipitation();
                 iconImg = tempData.getWeatherImgURL();
+
+                
+
                 mainHandler.post(() -> {
                     temp = findViewById(R.id.id_temp);
                     temp.setText(temperatureVar);
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void SetValues (){
         Log.d("TEMPERATURE","SetValues: " + 123.123);
+
 
         WindSpeed.setText(windspeedVar);
         rain.setText(rainVar);
