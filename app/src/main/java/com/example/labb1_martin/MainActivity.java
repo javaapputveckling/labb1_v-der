@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     String cloudinessVar;
     String windspeedVar;
     String rainVar;
+    String windDir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,20 +55,18 @@ public class MainActivity extends AppCompatActivity {
 
                 temperatureVar = "Temp: " + Double.toString(tempData.getTemperature());
                 cloudinessVar = "Cloud: " + tempData.getHumidity();
-                windspeedVar = "Windspeed: " + tempData.getWindSpeed();
+                windDir = degToCompass(tempData.getWindDirection());
+                windspeedVar = "Windspeed: " + tempData.getWindSpeed() + " at direction " + windDir;
                 rainVar = "Rain: " + tempData.getPrecipitation();
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        temp = findViewById(R.id.id_temp);
-                        temp.setText(temperatureVar);
-                        cloud = findViewById(R.id.id_clouds);
-                        cloud.setText(cloudinessVar);
-                        WindSpeed = findViewById(R.id.id_wind);
-                        WindSpeed.setText(windspeedVar);
-                        rain = findViewById(R.id.id_rain);
-                        rain.setText(rainVar);
-                    }
+                mainHandler.post(() -> {
+                    temp = findViewById(R.id.id_temp);
+                    temp.setText(temperatureVar);
+                    cloud = findViewById(R.id.id_clouds);
+                    cloud.setText(cloudinessVar);
+                    WindSpeed = findViewById(R.id.id_wind);
+                    WindSpeed.setText(windspeedVar);
+                    rain = findViewById(R.id.id_rain);
+                    rain.setText(rainVar);
                 });
             } catch (InterruptedException | IOException e) {
                 throw new RuntimeException(e);
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void SetValues (){
         Log.d("TEMPERATURE","SetValues: " + 123.123);
+
 
         WindSpeed.setText(windspeedVar);
         rain.setText(rainVar);
@@ -110,13 +110,14 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      *
-     * @param num which is wind degree
+     * @param windDegree which is wind degree in String
      * Converts wind degree to direction
      * @return directions
      */
-    public String degToCompass (float num){
+    public String degToCompass(String windDegree){
+        float windFloat = Float.parseFloat(windDegree);
         String arr [] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N" };
-        return arr [(int)Math.round(((float)  num % 360) / 45)];
+        return arr [(int)Math.round(((float)  windFloat % 360) / 45)];
     }
 
 }
