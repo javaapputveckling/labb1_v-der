@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     String windspeedVar;
     String rainVar;
     String windDir;
+    String iconImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 windDir = degToCompass(tempData.getWindDirection());
                 windspeedVar = "Windspeed: " + tempData.getWindSpeed() + " at direction " + windDir;
                 rainVar = "Rain: " + tempData.getPrecipitation();
+                iconImg = tempData.getWeatherImgURL();
                 mainHandler.post(() -> {
                     temp = findViewById(R.id.id_temp);
                     temp.setText(temperatureVar);
