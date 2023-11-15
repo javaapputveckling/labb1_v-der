@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
     public void SetValues (){
         Log.d("TEMPERATURE","SetValues: " + 123.123);
 
-
         WindSpeed.setText(windspeedVar);
         rain.setText(rainVar);
         cloud.setText(cloudinessVar);
