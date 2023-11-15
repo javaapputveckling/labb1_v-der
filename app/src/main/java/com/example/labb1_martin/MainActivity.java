@@ -1,23 +1,20 @@
 package com.example.labb1_martin;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.TextView;
-
-import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Executor;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.util.Log;
-import java.util.ArrayList;
 
-import kotlinx.coroutines.internal.Symbol;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+
+import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     Button refresh;
@@ -32,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     String cloudinessVar;
     String windspeedVar;
     String rainVar;
+    String imageURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,22 +50,19 @@ public class MainActivity extends AppCompatActivity {
                 WeatherDataFetcher weatherDataFetcher = new WeatherDataFetcher();
                 tempData = weatherDataFetcher.fetchWeatherData("62.930812", "17.306927");
 
-                temperatureVar = "Temp: " + Double.toString(tempData.getTemperature());
-                cloudinessVar = "Cloud: " + tempData.getHumidity();
-                windspeedVar = "Windspeed: " + tempData.getWindSpeed();
+                temperatureVar = "Temp: " + tempData.getTemperature();
+                cloudinessVar = "Cloud: " + tempData.getCloudiness();
+                windspeedVar = "Windspeed: " + tempData.getWindSpeed() + " " + degToCompass(Float.parseFloat(tempData.getWindDirection()));
                 rainVar = "Rain: " + tempData.getPrecipitation();
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        temp = findViewById(R.id.id_temp);
-                        temp.setText(temperatureVar);
-                        cloud = findViewById(R.id.id_clouds);
-                        cloud.setText(cloudinessVar);
-                        WindSpeed = findViewById(R.id.id_wind);
-                        WindSpeed.setText(windspeedVar);
-                        rain = findViewById(R.id.id_rain);
-                        rain.setText(rainVar);
-                    }
+                imageURL = tempData.getWeatherImgURL();
+                mainHandler.post(() -> {
+                    temp = findViewById(R.id.id_temp);
+                    cloud = findViewById(R.id.id_clouds);
+                    WindSpeed = findViewById(R.id.id_wind);
+                    rain = findViewById(R.id.id_rain);
+
+                    setValues();
+
                 });
             } catch (InterruptedException | IOException e) {
                 throw new RuntimeException(e);
@@ -77,20 +72,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void displayApp() {
         initialView();
-        SetValues();
-        refresh.setOnClickListener(view -> {SetValues();});
+        setValues();
+        refresh.setOnClickListener(view -> setValues());
     }
 
     /**
      * Updates values on UI
      */
-    public void SetValues (){
+    public void setValues(){
         Log.d("TEMPERATURE","SetValues: " + 123.123);
 
         WindSpeed.setText(windspeedVar);
         rain.setText(rainVar);
         cloud.setText(cloudinessVar);
         temp.setText(temperatureVar);
+
+        Glide.with(this)
+                .load(imageURL)
+                .into(MainImage);
 
     }
 
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
      * @return directions
      */
     public String degToCompass (float num){
-        String arr [] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N" };
+        String[] arr = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N" };
         return arr [(int)Math.round(((float)  num % 360) / 45)];
     }
 
