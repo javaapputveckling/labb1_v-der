@@ -53,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
                 tempData = weatherDataFetcher.fetchWeatherData("62.930812", "17.306927");
 
 
-                temperatureVar = "Temp: " + tempData.getTemperature();
-                cloudinessVar = "Cloud: " + tempData.getCloudiness();
-                windspeedVar = "Windspeed: " + tempData.getWindSpeed() + " " + degToCompass(Float.parseFloat(tempData.getWindDirection()));
-                rainVar = "Rain: " + tempData.getPrecipitation();
+                temperatureVar = "Temp: " + tempData.getTemperature()+"°";
+                cloudinessVar = "Cloud: " + tempData.getCloudiness()+"%";
+                windspeedVar = "Windspeed: " + tempData.getWindSpeed() + "m/s  " + degToCompass(Float.parseFloat(tempData.getWindDirection()));
+                rainVar = "Rain: " + tempData.getPrecipitation()+" mm";
                 imageURL = tempData.getWeatherImgURL();
                 mainHandler.post(() -> {
                     temp = findViewById(R.id.id_temp);
