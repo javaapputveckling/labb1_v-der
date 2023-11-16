@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 WeatherData tempData;
                 WeatherDataFetcher weatherDataFetcher = new WeatherDataFetcher();
-                tempData = weatherDataFetcher.fetchWeatherData("62.930812", "17.306927");
+                tempData = weatherDataFetcher.fetchWeatherData("62.392899", "17.285322");
 
 
                 temperatureVar = "Temp: " + tempData.getTemperature();
