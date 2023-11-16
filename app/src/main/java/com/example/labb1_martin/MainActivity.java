@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     TextView cloud;
     TextView temp;
     TextView WindSpeed;
+    TextView IconDesc;
     ImageView MainImage;
 
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     String windspeedVar;
     String rainVar;
     String imageURL;
+    String iconDesc;
 
 
     @Override
@@ -61,12 +63,14 @@ public class MainActivity extends AppCompatActivity {
                 cloudinessVar = "Cloud: " + tempData.getCloudiness()+"%";
                 windspeedVar = "Windspeed: " + tempData.getWindSpeed() + "m/s  " + degToCompass(Float.parseFloat(tempData.getWindDirection()));
                 rainVar = "Rain: " + tempData.getPrecipitation()+" mm";
+                iconDesc = tempData.getWeatherIcons_desc();
                 imageURL = tempData.getWeatherImgURL();
                 mainHandler.post(() -> {
                     temp = findViewById(R.id.id_temp);
                     cloud = findViewById(R.id.id_clouds);
                     WindSpeed = findViewById(R.id.id_wind);
                     rain = findViewById(R.id.id_rain);
+                    IconDesc = findViewById(R.id.id_icon_desc);
 
                     setValues();
 
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         rain.setText(rainVar);
         cloud.setText(cloudinessVar);
         temp.setText(temperatureVar);
-
+        IconDesc.setText(iconDesc);
         Glide.with(this)
                 .load(imageURL)
                 .into(MainImage);
@@ -113,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
        temp = findViewById(R.id.id_temp);
        WindSpeed = findViewById(R.id.id_wind);
        MainImage = findViewById(R.id.Id_main_image);
+       IconDesc = findViewById(R.id.id_icon_desc);
 
     }
 
