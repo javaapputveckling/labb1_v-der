@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     TextView cloud;
     TextView temp;
     TextView WindSpeed;
+    TextView IconDesc;
     ImageView MainImage;
 
 
@@ -30,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
     String windspeedVar;
     String rainVar;
     String imageURL;
-    String windDir;
-    String iconImg;
+    String iconDesc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
         displayApp();
     }
 
+    /**
+     * Fetches data from API
+     * Parses data
+     * Updates values on UI
+     */
     public void executeParsing() {
         Executor executor = Executors.newSingleThreadExecutor();
         Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -57,12 +63,14 @@ public class MainActivity extends AppCompatActivity {
                 cloudinessVar = "Cloud: " + tempData.getCloudiness()+"%";
                 windspeedVar = "Windspeed: " + tempData.getWindSpeed() + "m/s  " + degToCompass(Float.parseFloat(tempData.getWindDirection()));
                 rainVar = "Rain: " + tempData.getPrecipitation()+" mm";
+                iconDesc = tempData.getWeatherIcons_desc();
                 imageURL = tempData.getWeatherImgURL();
                 mainHandler.post(() -> {
                     temp = findViewById(R.id.id_temp);
                     cloud = findViewById(R.id.id_clouds);
                     WindSpeed = findViewById(R.id.id_wind);
                     rain = findViewById(R.id.id_rain);
+                    IconDesc = findViewById(R.id.id_icon_desc);
 
                     setValues();
 
@@ -91,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         rain.setText(rainVar);
         cloud.setText(cloudinessVar);
         temp.setText(temperatureVar);
-
+        IconDesc.setText(iconDesc);
         Glide.with(this)
                 .load(imageURL)
                 .into(MainImage);
@@ -109,12 +117,13 @@ public class MainActivity extends AppCompatActivity {
        temp = findViewById(R.id.id_temp);
        WindSpeed = findViewById(R.id.id_wind);
        MainImage = findViewById(R.id.Id_main_image);
+       IconDesc = findViewById(R.id.id_icon_desc);
 
     }
 
     /**
 
-     * @param windDegree which is wind degree in String
+     * @param num which is wind degree in String
      * Converts wind degree to direction
      * @return directions
      */
