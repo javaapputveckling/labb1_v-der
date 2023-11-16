@@ -32,7 +32,7 @@ public class WeatherData {
     }
 
     public String getWeatherIcons_desc() {
-        return weatherIcons_desc.get(this.getWeatherCondition());
+        return weatherIcons_desc.get(this.getWeatherCondition())!=null? weatherIcons_desc.get(this.getWeatherCondition()) : this.getWeatherCondition();
     }
 
     public WeatherData(double temperature, String weatherCondition, String windSpeed, String windDirection, String humidity, Double precipitation, String cloudiness) {
