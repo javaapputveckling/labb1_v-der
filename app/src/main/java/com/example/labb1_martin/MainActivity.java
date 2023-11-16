@@ -53,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
                 tempData = weatherDataFetcher.fetchWeatherData("62.392899", "17.285322");
 
 
-                temperatureVar = "Temp: " + tempData.getTemperature();
-                cloudinessVar = "Cloud: " + tempData.getCloudiness();
-                windspeedVar = "Windspeed: " + tempData.getWindSpeed() + " " + degToCompass(Float.parseFloat(tempData.getWindDirection()));
-                rainVar = "Rain: " + tempData.getPrecipitation();
+                temperatureVar = "Temp: " + tempData.getTemperature()+"°";
+                cloudinessVar = "Cloud: " + tempData.getCloudiness()+"%";
+                windspeedVar = "Windspeed: " + tempData.getWindSpeed() + "m/s  " + degToCompass(Float.parseFloat(tempData.getWindDirection()));
+                rainVar = "Rain: " + tempData.getPrecipitation()+" mm";
                 imageURL = tempData.getWeatherImgURL();
                 mainHandler.post(() -> {
                     temp = findViewById(R.id.id_temp);
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
+
      * @param windDegree which is wind degree in String
      * Converts wind degree to direction
      * @return directions
