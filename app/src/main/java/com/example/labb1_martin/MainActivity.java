@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
     String windspeedVar;
     String rainVar;
     String imageURL;
-    String windDir;
-    String iconImg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         displayApp();
     }
 
+    /**
+     * Fetches data from API
+     * Parses data
+     * Updates values on UI
+     */
     public void executeParsing() {
         Executor executor = Executors.newSingleThreadExecutor();
         Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -114,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
 
-     * @param windDegree which is wind degree in String
+     * @param num which is wind degree in String
      * Converts wind degree to direction
      * @return directions
      */
