@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * test
+
      * @param windDegree which is wind degree in String
      * Converts wind degree to direction
      * @return directions
